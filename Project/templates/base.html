@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        nav {
+            margin-top: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0px;
+        }
+
+        .categoryBox {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .categorys  {
+            width: calc(33.33% - 250px);
+            margin-bottom: 20px;
+            margin-left: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .categorys  h3 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .categorys p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #666;
+        }
+        #categoryBox{
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: 250px;
+        }
+        h1{
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Убейте меня нахрен, я не могу существовать в этой фигне</h1>
+            <nav>
+                <ul>
+                    <li><a href="/base">Главная</a></li>
+                    <li><a href="/second">Вторая</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="card">
+        <h1>GET</h1>
+
+        <div id="categoryBox"></div>
+
+        <script>
+
+            function fetchData() {
+    
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/api/categorys", true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+    
+                        var categorys = JSON.parse(xhr.responseText);
+    
+                        var categorysHTML = "";
+    
+                        categorys.forEach(function(categorys) {
+                            categorysHTML += "<div class='categorys'>";
+                            categorysHTML += "<h3>" + categorys.id + "</h3>";
+                            categorysHTML += "<p>" + categorys.name + "<p>";
+                            categorysHTML += "<p>Description: " + categorys.description + "</p>";
+                            categorysHTML += "</div>";
+                        });
+    
+                        document.getElementById("categoryBox").innerHTML = categorysHTML;
+                    }
+                };
+    
+                xhr.send();
+            }
+    
+    
+            window.onload = function() {
+                fetchData();
+            };
+        </script>
+  
+</body>
+</html>

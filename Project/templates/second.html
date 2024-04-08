@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Выбери что нибудь, и смотайся</title>
+<style>
+  body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        nav {
+            margin-top: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+  .categorys-card {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-top: 20px;
+    width: 300px;
+    margin-left: 30%;
+  }
+
+  .categorys-card form {
+    margin-top: 20px;
+  }
+  .categorys-card input[type="text"],
+  .categorys-card input[type="number"],
+  .categorys-card input[type="file"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  .categorys-card input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: #5cb85c;
+    color: white;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  .categorys-card input[type="submit"]:hover {
+    background-color: #4cae4c;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="container">
+        <h1>Салам Алейкум, дорогой!</h1>
+        <nav>
+            <ul>
+                <li><a href="/base">Главная</a></li>
+                <li><a href="/second">Вторая</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<div class="categorys-card">
+  <form id="categorysForm">
+      <h1>POST</h1>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="description">Description:</label>
+      <input type="text" id="description" name="description" required>
+
+      <input type="submit" value="Add categorys">
+  </form>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("categorysForm").addEventListener("submit", postData);
+  });
+  function postData(event) {
+      event.preventDefault();
+      var Name = document.getElementById("name").value;
+      var description = document.getElementById("description").value;
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/api/categorys", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
+                  document.getElementById("responseMessage").innerHTML = "Task created successfully.";
+              } else {
+                  document.getElementById("responseMessage").innerHTML = "Error: " + xhr.statusText;
+              }
+          }
+      };
+      var formData = JSON.stringify({
+          name: Name,
+          description: description
+      });
+
+      xhr.send(formData);
+  }
+</script>
+</div>
+
+  <div class="categorys-card">
+      <h1>DELETE</h1>
+
+      <form id="deleteForm">
+          <label for="categorysId">categorys ID:</label><br>
+          <input type="number" id="categorysId" name="categorysId"><br><br>
+          <button type="submit">Delete categorys</button>
+      </form>
+
+      <div id="responseMessage"></div>
+  </div>
+
+  <script>
+      function deleteData(event) {
+          event.preventDefault(); 
+          var taskId = document.getElementById("categorysId").value;
+          var xhr = new XMLHttpRequest();
+          xhr.open("DELETE", "/api/categorys/" + taskId, true);
+          xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4) {
+                  if (xhr.status === 200) {
+                      document.getElementById("responseMessage").innerHTML = "Task deleted successfully.";
+                  } else {
+                      document.getElementById("responseMessage").innerHTML = "Error: " + xhr.statusText;
+                  }
+              }
+          };
+          xhr.send();
+      }
+      document.getElementById("deleteForm").addEventListener("submit", deleteData);
+  </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login Form</title>
+    <link href="{{ url_for('static', path='/login.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="login-box">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <div class="user-box">
+            <label for="login">Login:</label><br>
+            <input type="text" id="login" name="login" required>
+          </div>
+          <div class="user-box">
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required>
+          </div>
+          <button type="button" onclick="authUser()">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Login
+          </button>
+        </form>
+      </div>
+    <script>
+        function authUser() {
+            var form = document.getElementById("loginForm");
+            var formData = new FormData(form);
+            var jsonObject = {};
+            formData.forEach(function(value, key){
+                jsonObject[key] = value;
+            });
+            var json = JSON.stringify(jsonObject);
+
+            fetch('/api/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: json
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                window.location.href = "http://127.0.0.1:8000/base/";
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
